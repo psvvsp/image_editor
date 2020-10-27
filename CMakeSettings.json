@@ -7,8 +7,8 @@
       "inheritEnvironments": [ "msvc_x64_x64" ],
       "buildRoot": "${projectDir}\\out\\build\\${name}",
       "installRoot": "${projectDir}\\out\\install\\${name}",
-      "cmakeCommandArgs": "-D BUILD_opencv_world=ON",
-      "buildCommandArgs": "install",
+      "cmakeCommandArgs": "",
+      "buildCommandArgs": "",
       "ctestCommandArgs": "",
       "variables": []
     },
@@ -18,8 +18,8 @@
       "configurationType": "Release",
       "buildRoot": "${projectDir}\\out\\build\\${name}",
       "installRoot": "${projectDir}\\out\\install\\${name}",
-      "cmakeCommandArgs": "-D BUILD_opencv_world=ON",
-      "buildCommandArgs": "install",
+      "cmakeCommandArgs": "",
+      "buildCommandArgs": "",
       "ctestCommandArgs": "",
       "inheritEnvironments": [ "msvc_x64_x64" ],
       "variables": []

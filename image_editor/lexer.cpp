@@ -1,5 +1,5 @@
 #include "lexer.h"
-using namespace std;
+#include "exception.h"
 
 namespace
 {
@@ -22,18 +22,15 @@ namespace
 
 }
 
-bool Lexer::process(const string& input, vector<string>& output)
+void Lexer::process(const string& input, vector<string>& output)
 {
     output.clear();
-    m_lastError.clear();
 
     vector<string> tmp;
     split(input, '"', tmp);
     
-    if (tmp.size() % 2 == 0) {
-        m_lastError = "Wrong usage of quotation marks";
-        return false;
-    }
+    if (tmp.size() % 2 == 0)
+        throw Exception("Wrong usage of quotation marks");
 
     for (size_t i = 0; i < tmp.size(); i++) {
         
@@ -50,6 +47,4 @@ bool Lexer::process(const string& input, vector<string>& output)
                     output.push_back(s);
         }
     }
-
-    return true;
 }

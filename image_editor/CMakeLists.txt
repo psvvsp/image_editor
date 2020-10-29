@@ -1,11 +1,15 @@
 ﻿add_executable (image_editor 
     "commands.cpp"
     "commands.h"
-    "image_editor.cpp"
-    "image_editor.h"
+    "main.cpp"
     "lexer.cpp"
     "lexer.h"
-    "parser.h")
+    "parser.h"
+    "parser.cpp"
+    "command_parser.cpp"
+    "command_parser.h"
+    "executor.cpp"
+    "executor.h")
 
 target_include_directories(image_editor PRIVATE
     ../opencv/include

@@ -1,23 +1,15 @@
 #pragma once
 
-#include <memory>
-#include <string>
-#include <vector>
-
-class Command;
+#include "common.h"
 
 class Parser
 {
 public:
-    template<typename T>
-    using vector = std::vector<T>;
+    void addCommandParser(CommandParserPtr commandParser);    
+    const vector<CommandParserPtr>& getCommandParsers() const;
 
-    typedef std::string string;
-
-    bool process(const vector<string>& tokens);
-    string getLastError() const { return m_lastError; }
+    CommandPtr process(const vector<string>& tokens);
 
 private:
-    string m_lastError;
-    vector<std::unique_ptr<Command>> m_commands;
+    vector<CommandParserPtr> m_commandParsers;
 };

@@ -1,40 +1,26 @@
 #pragma once
 
-#include <string>
-#include <vector>
+#include "common.h"
+
+class Executor;
 
 class Command
 {
 public:
-    template<typename T>
-    using vector = std::vector<T>;
-
-    typedef std::string string;
-
-    enum class ReturnCode
-    {
-        MATCH,
-        MISMATCH,
-        ERROR
-    };
-
     virtual ~Command() {}
-
-    virtual ReturnCode parse(const vector<string>& tokens) = 0;
-    
-    const string &getLastError() const { return m_lastError; }
-
-protected:
-    string m_lastError;
+    virtual void execute(Executor& executor) = 0;
 };
 
 class LoadCommand : public Command
 {
 public:
-    ReturnCode parse(const vector<string>& tokens) override;
+    LoadCommand(const string& name,
+                const string& filename)
+        : m_name(name)
+        , m_filename(filename)
+    {}
 
-    const string& getName() const { return m_name; }
-    const string& getFilename() const { return m_filename; }
+    void execute(Executor& executor) override;
 
 private:
     string m_name;
@@ -44,10 +30,13 @@ private:
 class StoreCommand : public Command
 {
 public:
-    ReturnCode parse(const vector<string>& tokens) override;
+    StoreCommand(const string& name,
+                 const string& filename)
+        : m_name(name)
+        , m_filename(filename)
+    {}
 
-    const string& getName() const { return m_name; }
-    const string& getFilename() const { return m_filename; }
+    void execute(Executor& executor) override;
 
 private:
     string m_name;
@@ -57,11 +46,15 @@ private:
 class BlurCommand : public Command
 {
 public:
-    ReturnCode parse(const vector<string>& tokens) override;
+    BlurCommand(const string& fromName,
+                const string& toName,
+                int size)
+        : m_fromName(fromName)
+        , m_toName(toName)
+        , m_size(size)
+    {}
 
-    const string& getFromName() const { return m_fromName; }
-    const string& getToName() const { return m_toName; }
-    int getSize() const { return m_size; }
+    void execute(Executor& executor) override;
 
 private:
     string m_fromName;
@@ -72,12 +65,17 @@ private:
 class ResizeCommand : public Command
 {
 public:
-    ReturnCode parse(const vector<string>& tokens) override;
+    ResizeCommand(const string& fromName,
+                  const string& toName,
+                  int newWidth,
+                  int newHeight)
+        : m_fromName(fromName)
+        , m_toName(toName)
+        , m_newWidth(newWidth)
+        , m_newHeight(newHeight)
+    {}
 
-    const string& getFromName() const { return m_fromName; }
-    const string& getToName() const { return m_toName; }
-    int getNewWidth() const { return m_newWidth; }
-    int getNewHeight() const { return m_newHeight; }
+    void execute(Executor& executor) override;
 
 private:
     string m_fromName;
@@ -89,12 +87,12 @@ private:
 class HelpCommand : public Command
 {
 public:
-    ReturnCode parse(const vector<string>& tokens) override;
+    void execute(Executor& executor) override;
 };
 
 class QuitCommand : public Command
 {
 public:
-    ReturnCode parse(const vector<string>& tokens) override;
+    void execute(Executor& executor) override;
 };
 

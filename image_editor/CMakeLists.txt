@@ -41,5 +41,5 @@ target_include_directories(image_editor PRIVATE
 
 target_link_libraries(image_editor opencv_world)
 
-
+set_property(TARGET image_editor PROPERTY CXX_STANDARD 17)
 

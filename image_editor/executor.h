@@ -2,6 +2,11 @@
 
 #include "common.h"
 
+#include <opencv2/core.hpp>
+
+#include <memory>
+#include <unordered_map>
+
 class Executor
 {
 public:
@@ -16,5 +21,9 @@ public:
     void setCommandParsers(const vector<CommandParserPtr>& commandParsers);
 
 private:
+    void throwIfImageInMemory(const string& name) const;
+    void throwIfImageNotInMemory(const string& name) const;
+
     vector<CommandParserPtr> m_commandParsers;
+    std::unordered_map<string, std::unique_ptr<cv::Mat>> m_images;
 };

@@ -9,7 +9,9 @@
     "command_parser.cpp"
     "command_parser.h"
     "executor.cpp"
-    "executor.h")
+    "executor.h"
+    "common.h"
+    "exception.h")
 
 target_include_directories(image_editor PRIVATE
     ../opencv/include

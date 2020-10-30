@@ -2,36 +2,72 @@
 #include "commands.h"
 #include "exception.h"
 
+#include <sstream>
+
+namespace
+{
+    string createHelpLine(const string& comm, const string& desc)
+    {
+        return "  " + comm + "\n    - " + desc + '\n';
+    }
+}
+
 string LoadCommandParser::helpString() const
 {
-    return "  load/ld <name> <file_name> - uploads file to memory";
+    return createHelpLine(
+        "load|ld <name> <file_name>",
+        "uploads file to memory");
 }
 
 string StoreCommandParser::helpString() const
 {
-    return "  store/s <name> <file_name> - saves file to disk";
+    return createHelpLine(
+        "store|s <name> <file_name>",
+        "saves file to disk");
 }
 
 string BlurCommandParser::helpString() const
 {
-    return "  blur <from_name> <to_name> <size> - "
-        "blurs image with factor \"size\"";
+    return createHelpLine(
+        "blur <from_name> <to_name> <size>",
+        "blurs image with factor \"size\"");
 }
 
 string ResizeCommandParser::helpString() const
 {
-    return "  resize <from_name> <to_name> <new_width> <new_height> -"
-        " resizes image";
+    return createHelpLine(
+        "resize <from_name> <to_name> <new_width> <new_height>",
+        "resizes image");
 }
 
 string HelpCommandParser::helpString() const
 {
-    return "  help - prints this message";
+    return createHelpLine(
+        "help",
+        "prints this message");
 }
 
 string QuitCommandParser::helpString() const
 {
-    return "  quit/exit/q - exits";
+    return createHelpLine(
+        "quit|exit|q",
+        "exits");
+}
+
+namespace
+{
+    bool stoi(const string& s, int& i)
+    {
+        size_t idx;
+        try {
+            i = std::stoi(s, &idx);
+        }
+        catch (...) {
+            return false;
+        }
+
+        return idx == s.length();
+    }
 }
 
 CommandPtr LoadCommandParser::process(const vector<string>& tokens)
@@ -91,10 +127,9 @@ CommandPtr BlurCommandParser::process(const vector<string>& tokens)
         throw Exception(error.c_str());
     }
 
-    size_t idx = 0;
-    int size = stoi(tokens[3], &idx);
+    int size;
 
-    if (idx != tokens[3].size()) {
+    if (!::stoi(tokens[3], size)) {
         string error = tokens.front() + ": invalid argument " + tokens[3];
         throw Exception(error.c_str());
     }
@@ -119,17 +154,16 @@ CommandPtr ResizeCommandParser::process(const vector<string>& tokens)
         throw Exception(error.c_str());
     }
 
-    size_t idx = 0;
-    int newWidth = stoi(tokens[3], &idx);
+    int newWidth;
 
-    if (idx != tokens[3].size()) {
+    if (!::stoi(tokens[3], newWidth)) {
         string error = tokens.front() + ": invalid argument " + tokens[3];
         throw Exception(error.c_str());
     }
 
-    int newHeight = stoi(tokens[4], &idx);
+    int newHeight;
 
-    if (idx != tokens[4].size()) {
+    if (!::stoi(tokens[4], newHeight)) {
         string error = tokens.front() + ": invalid argument " + tokens[4];
         throw Exception(error.c_str());
     }

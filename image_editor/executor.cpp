@@ -30,7 +30,7 @@ void Executor::resize(const string& fromName, const string& toName,
 
 void Executor::help()
 {
-    cout << "Supported commands:" << endl;
+    cout << endl << "Supported commands:" << endl << endl;
     for (CommandParserPtr commandParser : m_commandParsers)
         cout << commandParser->helpString() << endl;
 }
